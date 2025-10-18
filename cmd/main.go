@@ -13,6 +13,6 @@ func main() {
 	bookHandler := handlers.NewBookHandler(repo)
 	routes.SetupBookRoutes(bookHandler)
 
-	log.Println("Server starting on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Server starting on :3030")
+	log.Fatal(http.ListenAndServe(":3030", nil))
 }
