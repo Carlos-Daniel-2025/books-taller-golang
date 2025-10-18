@@ -9,7 +9,10 @@ import (
 )
 
 func main() {
-	repo := repositories.NewInMemoryBookRepository()
+	repo, err := repositories.NewSqliteBookRepository("books.db")
+	if err != nil {
+		log.Fatal(err)
+	}
 	bookHandler := handlers.NewBookHandler(repo)
 	routes.SetupBookRoutes(bookHandler)
 

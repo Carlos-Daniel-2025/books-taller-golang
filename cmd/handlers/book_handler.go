@@ -19,7 +19,7 @@ func NewBookHandler(repo repositories.BookRepository) *BookHandler {
 
 func (h *BookHandler) HandleBooks(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
-	if path == "/books" {
+	if path == "/books/" {
 		if r.Method == "GET" {
 			h.getAllBooks(w, r)
 		} else if r.Method == "POST" {
