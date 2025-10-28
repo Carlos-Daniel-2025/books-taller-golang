@@ -78,15 +78,31 @@ func (r *SqliteBookRepository) Create(book models.Book) (models.Book, error) {
 }
 
 func (r *SqliteBookRepository) Update(id int, book models.Book) (models.Book, error) {
-	_, err := r.db.Exec("UPDATE books SET title = ?, author = ?, year = ? WHERE id = ?", book.Title, book.Author, book.Year, id)
+	res, err := r.db.Exec("UPDATE books SET title = ?, author = ?, year = ? WHERE id = ?", book.Title, book.Author, book.Year, id)
 	if err != nil {
 		return models.Book{}, err
+	}
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return models.Book{}, err
+	}
+	if rowsAffected == 0 {
+		return models.Book{}, errors.New("book not found")
 	}
 	book.ID = id
 	return book, nil
 }
-
 func (r *SqliteBookRepository) Delete(id int) error {
-	_, err := r.db.Exec("DELETE FROM books WHERE id = ?", id)
-	return err
+	res, err := r.db.Exec("DELETE FROM books WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return errors.New("book not found")
+	}
+	return nil
 }
